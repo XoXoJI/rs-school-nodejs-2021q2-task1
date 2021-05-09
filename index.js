@@ -6,7 +6,12 @@ const options = argv.getArgvOptions(process.argv);
 
 pipeline(
     fs.createReadStream(options.input),
-    fs.createWriteStream(options.output),
+    fs.createWriteStream(
+        options.output,
+        {
+            flags: 'a'
+        }
+    ),
     (err) => {
         if (err) {
             console.error("Pipeline failed.", err);
