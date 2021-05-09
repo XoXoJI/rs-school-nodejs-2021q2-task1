@@ -1,14 +1,6 @@
-const program = require("commander");
-
-program
-  .option("-s, --shift <shift>")
-  .option("-i, --input <input>")
-  .option("-o, --output <output>")
-  .option("-a, --action <action>");
+const argv = require("./argv");
 
 
-program.parse(process.argv);
-
-const options = program.opts();
+const options = argv.getArgvOptions(process.argv);
 
 console.log(options);
