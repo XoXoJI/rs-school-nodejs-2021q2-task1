@@ -25,15 +25,15 @@ class argvOptions {
         this._instance = this;
 
         const shift = new program.Option("-s, --shift <shift>", "a shift");
-        shift.required = true;
+        shift.makeOptionMandatory();
 
         const input = new program.Option(
-            "-i, --input <input>",
+            "-i, --input [input]",
             "an input file"
         );
 
         const output = new program.Option(
-            "-o, --output <output>",
+            "-o, --output [output]",
             "an output file"
         );
 
@@ -42,7 +42,7 @@ class argvOptions {
             "an action encode/decode"
         );
         action.choices(["encode", "decode"]);
-        action.required = true;
+        action.makeOptionMandatory();
 
         program
             .addOption(shift)
