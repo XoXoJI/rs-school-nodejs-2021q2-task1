@@ -2,6 +2,14 @@ const program = require("commander");
 const path = require("path");
 const fs = require("fs");
 
+/**
+ * @typedef {Object} Options
+ * @property {number} shift - сдвиг
+ * @property {string | null} input - путь до файла с исходных тесктом
+ * @property {string | null} output - путь к файлу с результатом
+ * @property {boolean} isEncode - кодируем, или декодируем
+ */
+
 class argvOptions {
     constructor() {
         /**
@@ -46,6 +54,7 @@ class argvOptions {
     /**
      * Функция получения аргументов переданных через консоль
      * @param {string[]} argv
+     * @returns {Options}
      */
     getArgvOptions(argv) {
         // Кешируем
@@ -55,9 +64,9 @@ class argvOptions {
 
         program.parse(argv);
 
-        const options = program.opts();
+        const opts = program.opts();
 
-        this._parseInputOutputOptions(options);
+        const options = this._parseOptions(opts);
 
         if (options.input) this._checkAccesInputFile(options.input);
         if (options.output) this._checkAccesOutputFile(options.output);
@@ -69,6 +78,27 @@ class argvOptions {
 
     /**
      * Функция валидации полученных аргументов
+     * @param {program.OptionValues} opts
+     * @returns {Options}
+     */
+    _parseOptions(opts) {
+        /**
+         * @type {Options}
+         */
+        const options = {
+            shift: +opts.shift,
+            input: opts.input,
+            output: opts.output,
+            isEncode: opts.action === 'encode'
+        };
+
+        this._parseInputOutputOptions(options);
+
+        return options;
+    }
+
+    /**
+     * Функция валидации аргументов путей к файлам
      * @param {program.OptionValues} options
      */
     _parseInputOutputOptions(options) {
