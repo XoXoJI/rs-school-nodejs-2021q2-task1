@@ -1,7 +1,21 @@
 const program = require("commander");
+const path = require("path");
+const fs = require("fs");
 
 class argvOptions {
     constructor() {
+        /**
+         * @type {Object<string, program.OptionValues>}
+         */
+        this._options = {};
+
+        // синглтон
+        if (this._instance) {
+            return this._instance;
+        }
+
+        this._instance = this;
+
         const shift = new program.Option("-s, --shift <shift>", "a shift");
         shift.required = true;
 
@@ -34,9 +48,63 @@ class argvOptions {
      * @param {string[]} argv
      */
     getArgvOptions(argv) {
+        // Кешируем
+        if (this._options[argv.join()]) {
+            return this._options[argv.join()];
+        }
+
         program.parse(argv);
 
-        return program.opts();
+        const options = program.opts();
+
+        this._parseInputOutputOptions(options);
+
+        if (options.input) this._checkAccesInputFile(options.input);
+        if (options.output) this._checkAccesOutputFile(options.output);
+
+        this._options[argv.join()] = options;
+
+        return this._options[argv.join()];
+    }
+
+    /**
+     * Функция валидации полученных аргументов
+     * @param {program.OptionValues} options
+     */
+    _parseInputOutputOptions(options) {
+        if (options.input) {
+            options.input = path.resolve(__dirname, options.input);
+        }
+
+        if (options.output) {
+            options.output = path.resolve(__dirname, options.output);
+        }
+    }
+
+    /**
+     * Проверка прав доступа на чтение файла
+     * @param {string} path
+     */
+    _checkAccesInputFile(path) {
+        try {
+            fs.accessSync(path, fs.constants.R_OK);
+        } catch (err) {
+            console.error(`no access to read ${path}!`);
+            process.exit(8);
+        }
+    }
+
+    /**
+     * Проверка прав доступа на запись в файл
+     * @param {string} path
+     */
+    _checkAccesOutputFile(path) {
+        try {
+            fs.accessSync(path, fs.constants.W_OK);
+        } catch (err) {
+            console.error(`no access to write ${path}!`);
+            process.exit(8);
+        }
     }
 }
 
