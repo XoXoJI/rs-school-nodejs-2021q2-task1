@@ -13,19 +13,19 @@ function encode(str, shift) {
         const smallAlfa = /[a-z]/;
         const bigAlfa = /[A-Z]/;
 
-        const smallAlfaRange = [97, 122];
-        const bigAlfaRange = [65, 90];
+        const smallAlfaIndexRange = [97, 122];
+        const bigAlfaIndexRange = [65, 90];
 
         let newAlfaIndex = char.charCodeAt(0);
 
         if (smallAlfa.test(char)) {
             newAlfaIndex += shift;
-            newAlfaIndex = getValidIndex(newAlfaIndex, smallAlfaRange);
+            newAlfaIndex = getValidIndex(newAlfaIndex, smallAlfaIndexRange);
         }
 
         if (bigAlfa.test(char)) {
             newAlfaIndex += shift;
-            newAlfaIndex = getValidIndex(newAlfaIndex, bigAlfaRange);
+            newAlfaIndex = getValidIndex(newAlfaIndex, bigAlfaIndexRange);
         }
 
         return String.fromCharCode(newAlfaIndex);
