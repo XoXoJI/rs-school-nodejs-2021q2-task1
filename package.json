@@ -1,0 +1,22 @@
+{
+  "name": "rs-school-nodejs-2021q2-task1",
+  "version": "1.0.0",
+  "description": "Caesar cipher CLI tool",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/XoXoJI/rs-school-nodejs-2021q2-task1.git"
+  },
+  "author": "Petrachkov A.D.",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/XoXoJI/rs-school-nodejs-2021q2-task1/issues"
+  },
+  "homepage": "https://github.com/XoXoJI/rs-school-nodejs-2021q2-task1#readme",
+  "dependencies": {
+    "commander": "^7.2.0"
+  }
+}
